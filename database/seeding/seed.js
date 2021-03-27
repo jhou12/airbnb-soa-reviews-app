@@ -1,80 +1,10 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const db = require('../db.js')
 const fakeData = require('./fakeData.js')
 const names = require('./names.js')
-const dotenv = require('dotenv').config()
 
-const sequelize = new Sequelize({
-  dialect: 'mysql',
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: 'fec_reviews',
-})
-
-let execAuth = async () => {
-  try {
-    await sequelize.authenticate()
-    console.log('Sequelize connected.')
-  } catch(e) {
-    console.error('Unable to connect Sequelize.', e)
-  }
-}
-
-const User = sequelize.define('User', {
-  userId: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-    autoIncrement: true,
-  },
-  name: Sequelize.TEXT,
-  photo: Sequelize.TEXT,
-}, { timestamps: false
-})
-
-const Review = sequelize.define('Review', {
-  reviewId: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-    autoIncrement: true,
-  },
-  year: Sequelize.INTEGER,
-  month: Sequelize.INTEGER,
-  description: Sequelize.TEXT,
-  cleanliness: Sequelize.INTEGER,
-  communication: Sequelize.INTEGER,
-  checkIn: Sequelize.INTEGER,
-  accuracy: Sequelize.INTEGER,
-  location: Sequelize.INTEGER,
-  value: Sequelize.INTEGER,
-  overall: Sequelize.INTEGER,
-  propertyId: Sequelize.INTEGER,
-  userId: Sequelize.INTEGER,
-}, { timestamps: false
-})
-
-const ReviewAvg = sequelize.define('ReviewAvg', {
-  reviewAvgId: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-    autoIncrement: true,
-  },
-  avgCleanliness: Sequelize.DECIMAL(10,1),
-  avgCommunication: Sequelize.DECIMAL(10,1),
-  avgCheckIn: Sequelize.DECIMAL(10,1),
-  avgAccuracy: Sequelize.DECIMAL(10,1),
-  avgLocation: Sequelize.DECIMAL(10,1),
-  avgValue: Sequelize.DECIMAL(10,1),
-  avgOverall: Sequelize.DECIMAL(10,2),
-  propertyId: Sequelize.INTEGER,
-}, { timestamps: false
-})
-
-sequelize.sync({force: true})
-.then(() => console.log('Tables synced.'))
+db.sequelize.sync({force: true})
 .then(() => {
-  console.log('SEEDING START')
+console.log('Tables synced, starting seed...')
 
 let TOTAL_HOUSES = 100
 let TOTAL_REVIEWS = 50
@@ -82,7 +12,7 @@ let TOTAL_REVIEWS = 50
 let namesArray = names.list.split(', ')
 let namesPromises = []
 namesArray.forEach((name, index) => {
-  let prom = User.create({name: name, photo: index})
+  let prom = db.User.create({name: name, photo: index})
   namesPromises.push(prom)
 })
 Promise.all(namesPromises)
@@ -92,7 +22,7 @@ for (let i = 0; i < TOTAL_HOUSES; i++) {
         for (let r = 0; r < TOTAL_REVIEWS; r++) {
           let review = fakeData.fullReview()
           let randomUser = Math.floor(Math.random() * 100)
-          let entry = Review.create({
+          let entry = db.Review.create({
             year: review.date[0],
             month: review.date[1],
             description: review.description,
@@ -111,13 +41,12 @@ for (let i = 0; i < TOTAL_HOUSES; i++) {
       }
       Promise.all(reviewsArray)
       .then(() => {
-        return Review.findAll({ order: sequelize.col('propertyId')})
+        return db.Review.findAll({ order: db.sequelize.col('propertyId')})
       })
       .then(() => {
         for (let i = 0; i < TOTAL_HOUSES; i++) {
-          Review.findAll({where: { propertyId: i }, raw: true}) // MUST ADD 'RAW: TRUE' OR ELSE ADDS 'PREVIOUSDATAVALUES'!!!
+          db.Review.findAll({where: { propertyId: i }, raw: true})
           .then(data => {
-            // console.log('found reviews;', data)
             let avgCleanlinessSum = 0
             let avgCommunicationSum = 0
             let avgCheckInSum = 0
@@ -142,7 +71,7 @@ for (let i = 0; i < TOTAL_HOUSES; i++) {
             let avgValue = avgValueSum / TOTAL_REVIEWS
             let avgOverall = avgOverallSum / TOTAL_REVIEWS
 
-            ReviewAvg.create({
+            db.ReviewAvg.create({
                 avgCleanliness,
                 avgCommunication,
                 avgCheckIn,
@@ -155,6 +84,5 @@ for (let i = 0; i < TOTAL_HOUSES; i++) {
           })
         }
       })
-
 })
 .catch(err => console.log('Table sync error:', err))

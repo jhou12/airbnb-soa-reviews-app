@@ -1,5 +1,4 @@
 let lorem = require('./loremipsum.js')
-let nameList = require('./names.js')
 
 let ratings = function() {
   // min to max range inclusive: Math.floor(Math.random() * (max - min + 1)) + min
@@ -23,10 +22,6 @@ let date = function() {
 }
 
 let description = function() {
-  // string of 2 sentences
-  // return [1,2].map(sentence => {
-  //   return lorem.blurb.split('. ')[Math.floor(Math.random() * 115)] + '. '
-  // }).join('')
   // string of 1 sentence
   return lorem.blurb.split('. ')[Math.floor(Math.random() * 115)] + '. '
 }
@@ -38,7 +33,6 @@ let fullReview = function() {
   review.description = description()
   return review
 }
-// console.log(fullReview())
 
 module.exports = {
   ratings,

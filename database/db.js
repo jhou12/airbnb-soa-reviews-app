@@ -3,19 +3,15 @@ const dotenv = require('dotenv').config()
 
 const sequelize = new Sequelize({
   dialect: 'mysql',
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: 'fec_reviews',
+  username: process.env.SQL_USER,
+  password: process.env.SQL_PASS,
+  database: process.env.SQL_DB,
+  logging: false,
 })
 
-let startup = async () => {
-  try {
-    await sequelize.authenticate()
-    console.log('Sequelize connected.')
-  } catch(e) {
-    console.log('Unable to connect Sequelize', e)
-  }
-}
+sequelize.authenticate()
+.then(() => console.log('Sequelize connected.'))
+.catch(e => console.log('Unable to connect Sequelize', e))
 
 const User = sequelize.define('User', {
   userId: {
@@ -69,14 +65,9 @@ const ReviewAvg = sequelize.define('ReviewAvg', {
 }, { timestamps: false
 })
 
-let execSync = async () => {
-  try {
-    await sequelize.sync()
-    console.log('Tables synced.')
-  } catch(e) {
-    console.log(e)
-  }
-}
+sequelize.sync()
+.then(() => console.log('Tables synced.'))
+.catch(e => console.log('sync error:',e))
 
 let reviews50 = async (id) => {
   try {
@@ -111,7 +102,7 @@ let reviews50 = async (id) => {
       allProps.reviewCount = numReviews
       return allProps
   } catch(e) {
-    console.log('DB ERROR', e)
+    console.log('db reviews50 error:', e)
   }
 }
 
@@ -120,7 +111,7 @@ let overall = async (id) => {
     let overallRating = await ReviewAvg.findOne({ where: { propertyId: id }})
     return overallRating
   } catch(e) {
-    console.log('DB ERROR', e)
+    console.log('db overall rating error:', e)
   }
 }
 
@@ -129,11 +120,15 @@ let total = async (id) => {
     let totalReviews = await Review.count({ where: { propertyId: id }})
     return totalReviews
   } catch(e) {
-    console.log('DB ERROR', e)
+    console.log('db total reviews error:', e)
   }
 }
 
 module.exports = {
+  sequelize,
+  User,
+  Review,
+  ReviewAvg,
   reviews50,
   overall,
   total,
