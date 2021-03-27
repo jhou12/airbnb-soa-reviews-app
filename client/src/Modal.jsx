@@ -1,14 +1,12 @@
 import React from 'react';
 import Averages from './Averages.jsx';
 import ReviewBlurb from './ReviewBlurb.jsx';
-// import styled from 'styled-components';
 import Styles, { ModalBackground, ModalBody, ModalX, ModalAvgs, ModalSearch, ModalReviews, ModalInput } from './Styles.js';
 
 const Modal = (props) => {
   const onClose = () => {
     props.toggleModal()
   }
-  //  console.log('reviews test', this.props)
     if (!props.visible) {
       return null
     } else {
@@ -16,7 +14,7 @@ const Modal = (props) => {
         <ModalBackground>
           <ModalBody>
 
-          <ModalX onClick={onClose}>X</ModalX>
+              <ModalX onClick={onClose}>X</ModalX>
 
               <ModalAvgs>
               <Averages
@@ -26,7 +24,7 @@ const Modal = (props) => {
               </ModalAvgs>
 
               <ModalSearch>
-                  <ModalInput type="text" name="search" placeholder="Search reviews" autocomplete="off"/>
+                <ModalInput type="text" name="search" placeholder="Search reviews" autocomplete="off"/>
               </ModalSearch>
 
               <ModalReviews data-testid="modalReviewsTest">
@@ -35,12 +33,14 @@ const Modal = (props) => {
               review={review}
               users={props.users}
               key={index}
-              data-testid="reviewBlurbTest"/>) :
+              data-testid="reviewBlurbTest"
+              />) :
               props.reviews6.map((review, index) => <ReviewBlurb
               review={review}
               users={props.users}
               key={index}
-              data-testid="reviewBlurbTest"/>)}
+              data-testid="reviewBlurbTest"
+              />)}
               </ModalReviews>
 
             </ModalBody>
