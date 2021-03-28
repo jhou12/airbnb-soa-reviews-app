@@ -1,25 +1,42 @@
-# Airbnb Reviews Clone
+# Fullstack Airbnb-Styled SOA Reviews Module
 
-I built this project from scratch to clone an Airbnb product page "Reviews" module. It generates persisting averages, user, and reviews data that can be viewed for 100 unique product ids. Made with full-stack js using MySQL, Express, React, and Node, tested with Jest, and deployed using Amazon EC2.
+Service-Oriented Architecture app modeled from the Airbnb Reviews service, built to:
+- seed and persist data (averages, users, and reviews) for 100 unique product IDs,
+- run alongside other services via proxy server,
+- display a full page of data per each unique product ID,
+- run locally, or be deployed via Amazon EC2.
 
-### Click [here](https://drive.google.com/file/d/1mt6DU9qSAPfE5dULvrw0HqkH4PqjrBEu/view?usp=sharing) for demo!
+ Built with the MERN stack, React Styled-Components, and React Router DOM.
 
-<!-- ## Live Demo Links
+### Default view:
+<p align="center">
+<img src="screenshot1.png" width="600"/>
+</p>
 
-  - Reviews: [link]
-  - Proxy: [link] -->
+### Modal view:
+<p align="center">
+<img src="screenshot2.png" width="600"/>
+</p>
 
 ## Setup on Local
 
-1. git clone
+1. `git clone`
 1. install dependencies with `npm install`
 1. seed database with `npm run seed`
 1. start server with `npm run start`
-1. view at PORT/rooms/:id (for id values 0-99)
+1. build bundle with `npm run build`
+1. verify app up and running at `localhost:3000/rooms/:id` (for id values 0-99)
+1. for development, start webpack with `npm run react-dev`
 
-For setup with proxy, complete steps above and follow steps for [proxy](https://github.com/FEC-corgis/Jenny-Proxy).
+## Setup on EC2
+
+Complete local setup & [add ec2 readme]
+
+## Setup with Proxy
+
+Complete local and EC2 setup, and follow setup instructions for [proxy](link to proxy repo).
 
 ## Related Projects
 
-  - https://github.com/FEC-corgis/Jenny-Service-MorePlacesToStay
-  - https://github.com/FEC-corgis/Jenny-Proxy
+  - [add link to proxy repo]
+  - [add link to carousel repo]
