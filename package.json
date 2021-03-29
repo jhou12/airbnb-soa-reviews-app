@@ -37,7 +37,6 @@
     "@babel/preset-react": "^7.12.10",
     "babel-loader": "^8.2.2",
     "eslint": "^7.18.0",
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor.git",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "nodemon": "^2.0.7",

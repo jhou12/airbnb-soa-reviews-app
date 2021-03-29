@@ -1,1 +1,0 @@
-ssh -i "fec1.pem" ubuntu@ec2-52-15-83-247.us-east-2.compute.amazonaws.com
