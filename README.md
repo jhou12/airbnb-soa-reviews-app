@@ -6,7 +6,7 @@ Service-Oriented Architecture app modeled from the Airbnb Reviews service, built
 - display a full page of data per each unique product ID,
 - run locally, or be deployed via Amazon EC2.
 
- Built with the MERN stack, React Styled-Components, and React Router DOM.
+ Built with the MERN stack using MongoDB, as well as React Styled-Components and React Router DOM.
 
 ### Default view:
 <p align="center">
